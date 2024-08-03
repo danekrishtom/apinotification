@@ -4,7 +4,7 @@ RUN npm install pm2 -g
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 
-WORKDIR /app
+WORKDIR /app 
 
 COPY package*.json ./
 
