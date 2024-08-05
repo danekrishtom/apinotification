@@ -25,7 +25,27 @@ Router.post("/sendPhysioTodayBookingNotification", async function (req, res) {
                 convertedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
             }
             const scheduleDate = new Date(convertedDate);
-            schedule.scheduleJob(scheduleDate, () => common.sendMultipleFormatNotifications(tasks.module, tasks.content_type, tasks.primaryId));
+            let sendDate = null;
+            let startStr = '00:00';
+            let endStr = '03:00';
+            let currentStr = tasks.bookTime;
+            let [startHours, startMinutes] = startStr.split(':').map(Number);
+            let startTime = new Date();
+            startTime.setHours(startHours, startMinutes, 0, 0);
+            let [endHours, endMinutes] = endStr.split(':').map(Number);
+            let endTime = new Date();
+            endTime.setHours(endHours, endMinutes, 59, 0);
+            let [currentHours, currentMinutes] = currentStr.split(':').map(Number);
+            let currentTime = new Date();
+            currentTime.setHours(currentHours, currentMinutes, 0, 0);
+            if(currentTime >= startTime && currentTime <= endTime){
+              let date = scheduleDate;
+              date.setDate(date.getDate() - 1);
+              sendDate = date;
+            }else{
+              sendDate = scheduleDate;
+            }
+            schedule.scheduleJob(sendDate, () => common.sendMultipleFormatNotifications(tasks.module, tasks.content_type, tasks.primaryId));
             return res.send({ status: 200, msg: "Notification Scheduled Successfully.", data: [] })
         } else {
             return res.send({ status: 200, msg: "No Notification To Schedule.", data: [] })

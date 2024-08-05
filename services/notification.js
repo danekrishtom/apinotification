@@ -1,10 +1,10 @@
 const FCM = require('fcm-node');
 const fs = require('fs');
+const path = require('path');
 const nodemailer = require('nodemailer');
 const SNSLibrary = require('../library/snslibrary');
 const config = require('../config');
 const handlebars = require('handlebars');
-const path = require('path');
 
 var firebaseServerKey = 'AAAAK7gOGig:APA91bFHzAy-S1HXWlOYoNpHdOucJE2NKaZLi7KQkiHz4fgW0oGyHc3097alHPE2ccFiRuc-lggeKMbzotFNdvQ39KwySn-xIGJFLfiSl4F6YfkCd3alU-2bEdmzQwX2MSF0B1Ip11Dj';
 const transporter = nodemailer.createTransport({
