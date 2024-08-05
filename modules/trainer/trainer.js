@@ -35,14 +35,10 @@ async function getTrainerVCNotification(task) {
     try {
         var response = await dbcontext.getReminderVCRecordForTrainer(task.VC_id);
         if (response.length > 0) {
-            if (response[0].MemberMsg != null) {
-                service.sendPushNotification(task.deviceToken, response[0].MemberMsg, task.title, task.notification_to_time);
-                service.sendMailNotification(task.toMail, task.name, "Reminder VC", response[0].MemberMsg, response[0].MemberMsgLang, task.mobile_no);
-                service.sendSMSNotification(task.cc_code, task.mobile_no, response[0].MemberMsg, response[0].MemberMsgLang);
-            } else if (response[0].TrainerMsg != null) {
-                service.sendPushNotification(task.deviceToken, response[0].TrainerMsg, task.title, task.notification_to_time);
-                service.sendMailNotification(task.toMail, task.name, "Reminder VC", response[0].TrainerMsg, response[0].TrainerMsgLang, task.mobile_no);
-                service.sendSMSNotification(task.cc_code, task.mobile_no, response[0].TrainerMsg, response[0].TrainerMsgLang);
+            if (response[0].Msg != null && response[0].Lang != null && response[0].Token != null) {
+                service.sendPushNotification(response[0].Token, response[0].Msg, task.title, task.notification_to_time);
+                service.sendMailNotification(task.toMail, task.name, "Reminder VC", response[0].Msg, response[0].Lang, task.mobile_no);
+                service.sendSMSNotification(task.cc_code, task.mobile_no, response[0].Msg, response[0].Lang);
             }
             return;
         }
